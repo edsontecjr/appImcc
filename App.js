@@ -1,98 +1,166 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
+import React, {useState} from 'react';
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';//importa oscomponentes que estamos usando
 
 export default function App() {
-  return (
+	const [peso, setPeso] = useState(0);
+	const [altura, setAltura] = useState(0);
+	const [resultado, setResultado] = useState(0);
+	const [imc, setImc] = useState("");
+	
+	function Calcular (){
+		let r = parseFloat(peso) / (parseFloat(altura)*parseFloat(altura));
+		if (r<=16.9){
+			setImc("- Muito abaixo do peso");
+		}else if(r >= 17 && r <= 24.9){
+			setImc("- Peso normal");
+		}else if(r >= 25 && r <=29.9){
+			setImc("- Acima do peso");
+		}else if(r >= 30 && r <=34.9){
+			setImc("- Obesidade grau I");
+		}else if(r >= 35 && r <= 40){
+			setImc("- Obesidade grau II");
+		}else{
+			setImc("- Obesidade grau III");
+		}
+		setResultado(r);
+	}
+	function Limpar (){
+		setPeso(0);
+		setAltura(0);
+		setResultado(0);
+		setImc("");
+	}
+	
+	
+  return ( //como o funcionamento de uma classe
     <View style={styles.container}>
 		  <View style={styles.titulo}>
+		  	<Text style={styles.textoTitulo}>Calculadora IMC</Text>
+		  </View>
 		  
-      <Text style={styles.textoTitulo}>CALCULADORA IMC</Text>
-      
-    </View>
 		  <View style={styles.blocoImagem}>
 			  <Image
-				  style={styles.imagem}
-		  			source={require('./assets/imc.jpg')}
-		  		/>
+       			 style={styles.imagem}//pra que a imagem funcione é obrigatorio colocar uma altura e uma largura
+       			 source={require('./assets/imc.jpg')}
+      			/>
 		  </View>
 		  
-		<View style={styles.bloco}>
-			<Text>Peso: </Text>
-			  <TextInput
-				  style={styles.input}
-				  />
+		  <View style={styles.bloco}>
+		  	<Text style={styles.label}>Peso: </Text>
+     		 <TextInput
+       			style={styles.input}
+				 value={peso}
+				 onChangeText={(peso)=>setPeso(peso)}
+				 />
 			  
-		<Text style={styles.label}>Altura: </Text>
-			  <TextInput
-				  style={styles.input}
-				  />
+        		<Text style={styles.label}>Altura: </Text>
+     		 <TextInput
+       			style={styles.input}
+				 value={altura}
+				 onChangeText={(altura)=>setAltura(altura)}
+				 />
+     		  	  
 		  </View>
+		  		  
 		  <View style={styles.blocoBotao}>
-		  <TouchableOpacity styles={styles.Botao}>
-			  <Text style={styles.textoBotao}>Calcular</Text>
+			  	<TouchableOpacity style={styles.botao} onPress={Calcular}>
+			  		<Text style={styles.textBotao}>Calcular</Text>
 			  </TouchableOpacity>
-		  
+			  
 			  <TouchableOpacity style={styles.botao}>
-			  <Text style={styles.textoBotao}>Limpar</Text>
+			  		<Text style={styles.textBotao}>Limpar</Text>
 			  </TouchableOpacity>
 		  </View>
 		  
-	</View>
+      	  <View style={styles.boxResultado}>
+			  <Text style={styles.resultado}> Resultado: {resultado} {imc}</Text>
+		  </View>
+		  
+    </View> 
   );
 }
 
+ 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor:'#fff',
-	},
+  container: {
+    flex: 5,
+    backgroundColor: 'white',
+    
+  },
+	//cor do container do titulo
 	titulo:{
-		backgroundColor:'#ffa500',
-		height:'10%',
-		justifyContent:'center',
+		backgroundColor: 'black',
+		height:'5%',
+		justifyContent: 'center'
+		
 	},
+	//cor da letra
 	textoTitulo:{
-		fontSize:20,
+		fontSize:40,
 		textAlign:'center',
-		color:'#fff',
+		color:'pink'
 	},
+	//tamanho da logo
 	imagem:{
-		width: 66,
-		height: 58,
-	},
-	blocoImagem:{
-		alignItens:'center',
-		marginTop:30,
-	},
-	bloco:{
-		width:'80%',
-		marginLeft:'10%',
-	},
-	label:{
-		fontSize:20,
-	},
-	input:{
-		borderWidth:1,
-		fontSize:30,
-		borderRadius:5,
+		width:100,
+		height:100,
+	},	
 	
-},
-blocoBotao:{
-	flexDirection:'row',
-	width:'80%',
-	marginLeft:'10%',
-},
-botao:{
-	backgroundColor:'#ffa500',
-	width:'40%',
-	height:40,
-	justifyContent:'center',
-	marginLeft:'5%',
-	marginRight:'5%',
-	marginTop:20
+	blocoImagem:{
+		alignItems:'center',
+		marginTop: 30
+		
 	},
-textoBotao:{
-	textAlign:'center',
+	
+	bloco:{
+		fontSize:20,
+		borderRadious: 30,
+		width:'80%',
+	 	marginLeft:'10%'
+
+	},
+	//peso e altura
+	label:{
+	height: 40,
+    margin: 12,
+    borderWidth: 2,
+    padding: 10,
+	borderRadious: 18,
+	backgroundColor: 'red',
 	fontSize:20
-	}
+		
+	},
+	
+	input:{
+	 borderWidth:1,
+	 fontSize:30,
+	 borderRadius:5
+  },
+	
+	  blocoBotao:{
+	  flexDirection:'row',
+	  width:'80%',
+	  marginLeft:'10%'
+  },
+  botao:{
+	  backgroundColor:'blue',
+	  width:'40%',
+	  height:40,
+	  justifyContent:'center',
+	  marginLeft:'5%',
+	  marginRight:'5%',
+	  marginTop:20
+  },
+  textoBotao:{
+	  textAlign:'center',
+	  fontSize:20,
+	  color:'black'
+  },
+	boxResultado:{
+		textAlign:'center',
+		marginTop:100,
+	},
+	resultado:{
+		fontSize:60,
+  }
 });
